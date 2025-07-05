@@ -1,1 +1,2 @@
 Feature line
+This is a new conflicting line from MAIN branch
