@@ -1,18 +1,26 @@
 ---
-- name: Install and start Apache(httpd)
+- name: Instal apache2 and start apache2 with handler
   hosts: webserver
   become: yes
   gather_facts: yes
+  vars:
+    pkg_name: apache2
   tasks:
-    - name: Install Apache2
+    - name: Install apache2
       apt:
-        name: apache2
+        name: "{{pkg_name}}"
         state: present
-        update_cache: yes
 
-    - name: start apache2
+    - name: Copy index.html
+      copy:
+        content: "Hello From HTML"
+        dest: /var/www/html/index.html
+      notify: Restart apache2
+  handlers:
+    - name: Restart apache2
       service:
-        name: apache2
-        state: started
-        enabled: yes
+        name: "{{pkg_name}}"
+        state: restarted
+
+
 
